@@ -1,0 +1,32 @@
+<!doctype html><html lang="en"><head><meta charset="UTF-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>VanillaJS Boilerplate</title><style>body {
+        margin: 0;
+        padding: 0;
+
+      }
+
+      html {
+        overflow: hidden;
+      }
+
+
+      .container {
+        /*display: none;*/
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        z-index: 1;
+      }
+
+      .item {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        /*background: #959191;*/
+        font-size: 150px;
+      }</style><script defer="defer" src="bundle.js"></script></head><body><div id="parent"><div id="scene-scroll" class="container"><div id="scene-trigger" class="testContainer"><div class="item">1</div><div class="item">2</div><div class="item">3</div><div class="item">4</div><div class="item">5</div></div></div></div><script defer="defer">window.addEventListener("load", function() {
+      new window.ThreeJsScene('#parent', '#scene-scroll', '#scene-trigger');
+    });</script></body></html>
