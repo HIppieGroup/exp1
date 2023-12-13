@@ -1,5 +1,5 @@
 import { gsap } from 'gsap';
-import * as THREE from 'three';
+import * as THREE from './three';
 
 export default class CoreApp {
   constructor() {
@@ -18,15 +18,17 @@ export default class CoreApp {
 
   __onCreateApp = () => {
     this.scene = new THREE.Scene();
-    this.camera = new THREE.PerspectiveCamera(
-      30,
-      this.wWidth / this.wHeight,
-      0.1,
-      1000 // 400
-    );
+    this.sceneRender = new THREE.Scene();
+    this.camera = new THREE.Camera();
 
-    this.renderer = new THREE.WebGLRenderer({ antialias: true });
+    this.camera.position.z = 1;
+    this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+    this.renderer.setClearColor(0x202020);
+    this.renderer.sortObjects = false;
     this.renderer.setSize(this.wWidth, this.wHeight);
+
+    // this.renderer.shadowMap.enabled = true;
+    // this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   };
 
   onUpdate = () => {};
@@ -37,7 +39,7 @@ export default class CoreApp {
 
   __onUpdate = () => {
     this.onUpdate();
-    this.renderer.render(this.scene, this.camera);
+    // this.renderer.render(this.scene, this.camera);
   };
 
   __onCalcSize = () => {
