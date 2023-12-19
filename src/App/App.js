@@ -63,10 +63,10 @@ export default class AppGame extends CoreApp {
           type: 't',
           value: null,
         },
-        uPointSize: { type: 'f', value: 1 },
+        uPointSize: { type: 'f', value: 2 },
         uDensity: { type: 'f', value: 1 },
-        uAlpha: { type: 'f', value: 1 },
-        uColor: { type: 'c', value: new THREE.Vector3(1, 0, 0) },
+        uAlpha: { type: 'f', value: 0.23 },
+        uColor: { type: 'c', value: new THREE.Color('#FFFFFF') },
       },
       vertexShader: particlesVs,
       fragmentShader: particlesFs,
@@ -83,6 +83,7 @@ export default class AppGame extends CoreApp {
       depthTest: false,
       depthWrite: false,
     });
+
     this._copyMesh = new THREE.Mesh(
       new THREE.PlaneBufferGeometry(2, 2),
       this._copyMaterial
@@ -97,8 +98,6 @@ export default class AppGame extends CoreApp {
       this.mainObjects.curTexture
       // this._textureInput
     );
-
-    this._onControllerChange();
   };
 
   onUpdate = () => {
@@ -118,44 +117,6 @@ export default class AppGame extends CoreApp {
     }
   };
 
-  _onControllerChange() {
-    const data = this.data;
-
-    // this._renderer.setClearColor(new THREE.Color(data.bgColor));
-
-    this.meshPoints.material.uniforms.uPointSize.value = data.pointSize;
-    this.meshPoints.material.uniforms.uDensity.value = data.density;
-    this.meshPoints.material.uniforms.uAlpha.value = data.alpha;
-    this.meshPoints.material.uniforms.uColor.value = new THREE.Color(
-      data.particlesColor
-    );
-
-    this._doubleFBO.positionShader.uniforms.uFrictions.value =
-      1 - data.frictions;
-    this._doubleFBO.positionShader.uniforms.uStrength.value = data.mapStrength;
-    this._doubleFBO.positionShader.uniforms.uSpring.value = data.spring;
-    this._doubleFBO.positionShader.uniforms.uVelocityMax.value =
-      data.velocityMax;
-    this._doubleFBO.positionShader.uniforms.uAttraction.value =
-      data.initialAttraction;
-    this._doubleFBO.positionShader.uniforms.uResetStacked.value =
-      data.resetStacked ? 1 : 0;
-    this._doubleFBO.positionShader.uniforms.uStackSensibility.value =
-      data.stackSensibility;
-    this._doubleFBO.positionShader.uniforms.uRepulsion.value = data.repulsion
-      ? 1
-      : 0;
-    this._doubleFBO.positionShader.uniforms.uRepulsionStrength.value =
-      data.repulsionStrength;
-    this._doubleFBO.positionShader.uniforms.uRepulsionSensibility.value =
-      data.repulsionSensibility;
-    // this._doubleFBO.positionShader.uniforms.uRepulsionRadius.value = data.repulsionRadius;
-    this._doubleFBO.positionShader.uniforms.uMapStrength.value = data.strength;
-    this._doubleFBO.positionShader.uniforms.uInvert.value = data.inverted
-      ? 0
-      : 1;
-  }
-
   _resetRenderTarget() {
     if (this._rtOutput) this._rtOutput.dispose();
     this._rtOutput = new THREE.WebGLRenderTarget(this.wWidth, this.wHeight, {
@@ -169,8 +130,10 @@ export default class AppGame extends CoreApp {
       anisotropy: 0,
       depthBuffer: false,
     });
+
     this._rtOutput.texture.generateMipmaps = false;
     this._copyMaterial.map = this._rtOutput.texture;
+
     this._doubleFBO.positionShader.uniforms.uTextureOutput.value =
       this._rtOutput.texture;
   }

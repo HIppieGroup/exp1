@@ -43,13 +43,15 @@ export default class MainObjects {
     this.cube = createObj('BoxGeometry', [1.8, 1.8, 1.8]);
 
     this.sphere.position.x = -1;
-    this.cube.position.x = 1;
+    this.cube.position.x = 1.5;
+    this.cube.position.z = -1.5;
+    this.cube.rotation.set(0.8, 0.7, 0);
 
-    this.sphere.castShadow = true;
-    this.sphere.receiveShadow = true;
+    // this.sphere.castShadow = true;
+    // this.sphere.receiveShadow = true;
 
-    this.cube.castShadow = true;
-    this.cube.receiveShadow = true;
+    // this.cube.castShadow = true;
+    // this.cube.receiveShadow = true;
 
     this.scene.add(this.sphere);
     this.scene.add(this.cube);
@@ -57,9 +59,12 @@ export default class MainObjects {
     this.ambientLight = new THREE.AmbientLight(0xffffff);
     this.ambientLight.intensity = 1;
 
-    const dirLight = new THREE.DirectionalLight(0xffffff, 4);
+    const dirLight = new THREE.DirectionalLight(0xfefefe, 4);
     dirLight.position.set(-5, -1.4, 4);
-    dirLight.castShadow = true;
+    // dirLight.castShadow = true;
+
+    const dirLight2 = new THREE.DirectionalLight(0xfefefe, 4);
+    dirLight2.position.set(5, -1.4, 2);
 
     this.scene.add(this.ambientLight);
     this.scene.add(dirLight);
@@ -69,6 +74,7 @@ export default class MainObjects {
 
   render = () => {
     this.context.renderer.render(this.scene, this.camera, this.renderTarget);
+    // this.context.renderer.render(this.scene, this.camera);
     this.curTexture = this.renderTarget.texture;
   };
 }

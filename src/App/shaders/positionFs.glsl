@@ -28,32 +28,33 @@ uniform float uVy;
 const float PI = 3.141592653589793;
 const float PI_2 = PI * 2.0;
 
-vec4 threshold(sampler2D image, vec2 uv, float threshold, float smoothness)
-{
-	vec4 px = texture2D(image, uv);
+//vec4 threshold(sampler2D image, vec2 uv, float threshold, float smoothness)
+//{
+//	vec4 px = texture2D(image, uv);
+//
+//	float lum = dot(px, vec4(0.299,0.587,0.114,0.0));
+//
+//	return vec4(vec3(smoothstep(threshold, threshold + smoothness, lum)), 1.0);
+//}
 
-	float lum = dot(px, vec4(0.299,0.587,0.114,0.0));
-
-	return vec4(vec3(smoothstep(threshold, threshold + smoothness, lum)), 1.0);
-}
-
-vec2 repulsionForce(vec2 position, vec2 d)
-{
-	vec4 color = texture2D(uTextureOutput, position + d / uResolutionOutput.xy);
-
-	if(color.r > 0.2)
-		return d;
-	else
-		return vec2(0.0);
-}
+//vec2 repulsionForce(vec2 position, vec2 d)
+//{
+//	vec4 color = texture2D(uTextureOutput, position + d / uResolutionOutput.xy);
+//
+//	if(color.r > 0.2)
+//		return d;
+//	else
+//		return vec2(0.0);
+//}
 
 vec4 normalMap(sampler2D image, vec2 uv, float strength)
 {
-	const vec3 offsets = vec3(0.0, 1., -1.);
+	const vec3 offsets = vec3(0.4, 0.4, -0.4);
 	vec4 left = texture2D(image, uv + offsets.zy / uResolutionOutput);
 	vec4 right = texture2D(image, uv + offsets.xy / uResolutionOutput);
 	vec4 top = texture2D(image, uv + offsets.xz / uResolutionOutput);
 	vec4 bottom = texture2D(image, uv + offsets.xy / uResolutionOutput);
+
 	vec4 color = vec4(1.0) - vec4((left.r - right.r) * 0.5 + 0.5, (top.r - bottom.r) * 0.5 + 0.5, 0., 1.0);
 
 	if(uInvert == 1)
@@ -117,12 +118,9 @@ void main()
 
 	vec2 newPosition = position + velocity;
 
-	if(newPosition.x > 1.0 || newPosition.x < 0.0 || newPosition.y > 1.0 || newPosition.y < 0.0)
-	{
+	if(newPosition.x > 1.0 || newPosition.x < 0.0 || newPosition.y > 1.0 || newPosition.y < 0.0) {
 		newPosition = positionInit;
-	}
-	else if(uResetStacked == 1)
-	{
+	} else if (uResetStacked == 1) {
 		vec4 outputTx = texture2D(uTextureOutput, newPosition);
 		float luminance = 0.2126 * outputTx.r + 0.7152 * outputTx.g + 0.0722 * outputTx.b;
 

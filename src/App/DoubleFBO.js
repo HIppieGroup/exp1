@@ -88,8 +88,8 @@ export default class DoubleFBO {
 
     // Create position textures
     this._dtPosition = _getInitPositionsTexture(this._particles, {
-      width: 1000,
-      height: 1000,
+      width: window.innerWidth,
+      height: window.innerHeight,
     });
 
     // невидемый буфер для рисования
@@ -116,7 +116,7 @@ export default class DoubleFBO {
       uniforms: {
         uResolutionInput: {
           type: 'v2',
-          value: new THREE.Vector2(1000, 1000),
+          value: new THREE.Vector2(window.innerWidth, window.innerHeight),
         },
         uResolutionOutput: {
           type: 'v2',
@@ -128,19 +128,20 @@ export default class DoubleFBO {
         uTextureInput: { type: 't', value: this._textureInput }, // оригинальная картинка
         uTextureOutput: { type: 't', value: null },
 
-        uStrength: { type: 'f', value: null },
-        uFrictions: { type: 'f', value: null },
+        uStrength: { type: 'f', value: 0.007 },
+        uFrictions: { type: 'f', value: 1 },
         uSpring: { type: 'f', value: null },
-        uVelocityMax: { type: 'f', value: null },
-        uAttraction: { type: 'f', value: null },
-        uResetStacked: { type: 'i', value: null },
-        uStackSensibility: { type: 'f', value: null },
-        uRepulsion: { type: 'i', value: null },
-        uRepulsionStrength: { type: 'f', value: null },
-        uRepulsionSensibility: { type: 'f', value: null },
-        uInvert: { type: 'i', value: null },
+        uVelocityMax: { type: 'f', value: 0.0013 },
+        uAttraction: { type: 'f', value: 0 },
+        uResetStacked: { type: 'i', value: 1 },
+        uStackSensibility: { type: 'f', value: 0.3 },
+        uRepulsion: { type: 'i', value: 0 },
 
-        uMapStrength: { type: 'f', value: 0.1 },
+        uInvert: { type: 'i', value: 0 },
+        uMapStrength: { type: 'f', value: 0.32 },
+
+        // uRepulsionStrength: { type: 'f', value: null },
+        // uRepulsionSensibility: { type: 'f', value: null },
       },
       vertexShader: copyVs, // дефолтный вертекс
       fragmentShader: positionFs, // самый главный шейдер
